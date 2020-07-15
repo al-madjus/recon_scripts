@@ -35,7 +35,7 @@ wc -l  $DIR/scope/scope.txt
 
 ### Find which subs are alive ### 
 banner "httprobe"
-cat $DIR/scope/scope.txt | httprobe > $DIR/scope/alive.txt
+cat $DIR/scope/scope.txt | httprobe --prefer-https -c 10 > $DIR/scope/alive.txt
 
 ### Create list of dead subs for future checking ###
 sed -e 's/http:\/\///g' -e 's/https:\/\///g' -e 's/.*/\L&/' $DIR/scope/alive.txt > $DIR/scope/alive.tmp

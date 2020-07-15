@@ -11,7 +11,7 @@ cp $DIR/alive.txt $DIR/alive.old
 
 ### Find which subs are alive ### 
 echo -e "Finding alive subs:"
-cat $DIR/dead.txt | httprobe >> $DIR/alive.txt
+cat $DIR/dead.txt | httprobe --prefer-https -c 10 >> $DIR/alive.txt
 
 ### Removing duplicates ###
 sort -uo $DIR/alive.txt $DIR/alive.txt
