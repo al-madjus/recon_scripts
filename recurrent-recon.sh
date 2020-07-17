@@ -30,5 +30,5 @@ echo ${result}
 
 ### Display all the new subs ### 
 echo -e "New subs found:"
-grep -v -f $DIR/alive.old $DIR/alive.txt
+grep -F -x -v -f $DIR/alive.old $DIR/alive.txt
 rm $DIR/alive.old
