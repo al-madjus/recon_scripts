@@ -10,7 +10,7 @@ before=$(cat $DIR/alive.txt|wc -l)
 cp $DIR/alive.txt $DIR/alive.old
 
 ### Find which subs are alive ### 
-echo -e "Finding alive subs:"
+echo -e "Finding active subdomains... "
 cat $DIR/dead.txt | httprobe --prefer-https -c 200 >> $DIR/alive.txt
 
 ### Removing duplicates ###
@@ -23,12 +23,12 @@ mv $DIR/subs.tmp $DIR/dead.txt
 rm $DIR/alive.tmp
 
 ### Calculate number of new subs found ###
-echo -e "Number of new subs found:"
+echo -e "Number of new subdomains found:"
 after=$(cat $DIR/alive.txt|wc -l)
 let result=${after}-${before}
 echo ${result}
 
 ### Display all the new subs ### 
-echo -e "New subs found:"
+echo -e "These are the new subdomains found:"
 grep -F -x -v -f $DIR/alive.old $DIR/alive.txt
 rm $DIR/alive.old
