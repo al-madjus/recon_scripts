@@ -1,7 +1,7 @@
 #!/bin/bash
 # Automated recurrent recon
 
-DIR=$1
+DIR=$1/scope
 
 ### Check how many subs we already had ###
 before=$(cat $DIR/alive.txt|wc -l)
