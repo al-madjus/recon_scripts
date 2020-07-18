@@ -1,7 +1,7 @@
 #!/bin/bash
 # Automated recurrent recon
 
-DIR=$1
+DIR=$1/scope
 
 ### Check how many subs we already had ###
 before=$(cat $DIR/alive.txt|wc -l)
@@ -10,8 +10,8 @@ before=$(cat $DIR/alive.txt|wc -l)
 cp $DIR/alive.txt $DIR/alive.old
 
 ### Find which subs are alive ### 
-echo -e "Finding alive subs:"
-cat $DIR/dead.txt | httprobe --prefer-https -c 100 >> $DIR/alive.txt
+echo -e "Finding active subdomains... "
+cat $DIR/dead.txt | httprobe --prefer-https -c 200 >> $DIR/alive.txt
 
 ### Removing duplicates ###
 sort -uo $DIR/alive.txt $DIR/alive.txt
@@ -23,12 +23,12 @@ mv $DIR/subs.tmp $DIR/dead.txt
 rm $DIR/alive.tmp
 
 ### Calculate number of new subs found ###
-echo -e "Number of new subs found:"
+echo -e "Number of new subdomains found:"
 after=$(cat $DIR/alive.txt|wc -l)
 let result=${after}-${before}
 echo ${result}
 
 ### Display all the new subs ### 
-echo -e "New subs found:"
+echo -e "These are the new subdomains found:"
 grep -F -x -v -f $DIR/alive.old $DIR/alive.txt
 rm $DIR/alive.old
