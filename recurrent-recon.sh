@@ -10,7 +10,7 @@ before=$(cat $DIR/alive.txt|wc -l)
 cp $DIR/alive.txt $DIR/alive.old
 
 ### Find which subs are alive ### 
-echo -e "Finding active subdomains... "
+echo -e "Finding active subdomains on $1... "
 cat $DIR/dead.txt | httprobe --prefer-https -c 200 >> $DIR/alive.txt
 
 ### Removing duplicates ###
@@ -30,7 +30,7 @@ echo ${result}
 
 ### Display all the new subs ### 
 echo -e "These are the new subdomains found:"
-grep -F -x -v -f $DIR/alive.old $DIR/alive.txt
+grep -F -x -v -f $DIR/alive.old $DIR/alive.txt | tee -a ~/new_subs.txt
 rm $DIR/alive.old
 
 ### Remove http:// and https:// from the newest file ###
