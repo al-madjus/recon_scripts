@@ -37,7 +37,7 @@ echo -e "Found number of subs:"
 wc -l  $DIR/scope/scope.txt
 
 ### Backup alive subs ###
-cp $DIR/alive.txt $DIR/alive.old
+cp $DIR/scope/alive.txt $DIR/scope/alive.old
 
 ### Find which subs are alive ### 
 banner "httprobe"
@@ -49,8 +49,8 @@ grep -Fxvf $DIR/scope/alive.tmp $DIR/scope/scope.txt > $DIR/scope/dead.txt
 rm $DIR/scope/alive.tmp
 
 ### Display all the new subs ###
-echo "\n### $1 ###" >> ~/_results/subs-$TODAY.txt
+echo "\n### $1 ###" >> $DIR/../_results/subs-$TODAY.txt
 echo -e "These are the new subdomains found:"
 #echo "New subdomains: " >> ~/output-$TODAY.txt
-grep -F -x -v -f $DIR/alive.old $DIR/alive.txt | tee -a ~/_results/subs-$TODAY.txt
-rm $DIR/alive.old
+grep -F -x -v -f $DIR/scope/alive.old $DIR/scope/alive.txt | tee -a $DIR/../_results/subs-$TODAY.txt
+rm $DIR/scope/alive.old
