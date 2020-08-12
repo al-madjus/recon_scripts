@@ -30,7 +30,7 @@ let result=${after}-${before}
 echo ${result}
 
 ### Display all the new subs ### 
-echo "\n### $1 ###" >> ~/_results/subs-$TODAY.txt
+echo "### $1 ###" >> ~/_results/subs-$TODAY.txt
 echo -e "These are the new subdomains found:"
 #echo "New subdomains: " >> ~/output-$TODAY.txt
 grep -F -x -v -f $DIR/alive.old $DIR/alive.txt | tee -a ~/_results/subs-$TODAY.txt
