@@ -1,7 +1,7 @@
 #!/bin/bash
 
 DIR=$1
-TARGET=$2
+#TARGET=$2
 WORDLIST_PATH="/usr/share/wordlists"
 
 # Colors
@@ -17,14 +17,14 @@ banner(){
 
 ### Subdomain enumeration ###
 banner "Amass"
-amass enum -brute -min-for-recursive 2 -d $TARGET -r 8.8.8.8 -o $DIR/scope/amass.txt 
+while read p; do amass enum -brute -min-for-recursive 2 -d $p -r 8.8.8.8 -o $DIR/scope/amass.txt 
 # Clean up
 sed -i 's/target--//g' $DIR/scope/amass.txt
 
-findomain -q -t $TARGET > $DIR/scope/findomain.txt
+findomain -q -t $p > $DIR/scope/findomain.txt
 
 ### Merge files ###
-cat $DIR/scope/amass.txt $DIR/scope/findomain.txt >> $DIR/scope/scope.txt
+cat $DIR/scope/amass.txt $DIR/scope/findomain.txt >> $DIR/scope/scope.txt; done < $DIR/scope/domains.txt
 sort -uo $DIR/scope/scope.txt $DIR/scope/scope.txt
 
 ### Remove out of scope domains ###
