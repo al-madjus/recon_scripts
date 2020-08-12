@@ -27,11 +27,17 @@ findomain -q -t $TARGET > $DIR/scope/findomain.txt
 cat $DIR/scope/amass.txt $DIR/scope/findomain.txt >> $DIR/scope/scope.txt
 sort -uo $DIR/scope/scope.txt $DIR/scope/scope.txt
 
+### Remove out of scope domains ###
+while read p; do sed -i "/$p/d" $DIR/scope/scope.txt; done < $DIR/scope/oos.txt
+
 ### Clean up ###
 rm $DIR/scope/amass.txt $DIR/scope/findomain.txt
 
 echo -e "Found number of subs:"
 wc -l  $DIR/scope/scope.txt
+
+### Backup alive subs ###
+cp $DIR/alive.txt $DIR/alive.old
 
 ### Find which subs are alive ### 
 banner "httprobe"
@@ -41,3 +47,10 @@ cat $DIR/scope/scope.txt | httprobe --prefer-https -c 10 > $DIR/scope/alive.txt
 sed -e 's/http:\/\///g' -e 's/https:\/\///g' -e 's/.*/\L&/' $DIR/scope/alive.txt > $DIR/scope/alive.tmp
 grep -Fxvf $DIR/scope/alive.tmp $DIR/scope/scope.txt > $DIR/scope/dead.txt
 rm $DIR/scope/alive.tmp
+
+### Display all the new subs ###
+echo "\n### $1 ###" >> ~/_results/subs-$TODAY.txt
+echo -e "These are the new subdomains found:"
+#echo "New subdomains: " >> ~/output-$TODAY.txt
+grep -F -x -v -f $DIR/alive.old $DIR/alive.txt | tee -a ~/_results/subs-$TODAY.txt
+rm $DIR/alive.old
