@@ -2,7 +2,7 @@
 while read p; do ~/Pentesting/recon/recurrent.sh ~/Pentesting/targets/$p; done < ~/Pentesting/targets/programs.txt
 
 ### Do recon on the results from above ###
-TODAY=$(date + %d%m%Y)
+TODAY=$(date +%d%m%Y)
 
 ### Run ffuf ###
 while read p; do ffuf -u $p/FUZZ -w /usr/share/wordlists/default.txt -v -mc 200 -ac; done < ~/Pentesting/targets/_results/subs-$TODAY.txt >> ~/Pentesting/targets/_results/ffuf.txt

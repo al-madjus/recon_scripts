@@ -2,7 +2,7 @@
 # Automated recurrent recon
 
 DIR=$1/scope
-TODAY=$(date + %d%m%Y)
+TODAY=$(date +%d%m%Y)
 
 ### Check how many subs we already had ###
 before=$(cat $DIR/alive.txt|wc -l)
