@@ -3,7 +3,7 @@
 DIR=$1
 #TARGET=$2
 WORDLIST_PATH="/usr/share/wordlists"
-TODAY=`date +"%d%m%Y"`
+TODAY=$(date + %d%m%Y)
 
 # Colors
 GREEN="\033[1;32m"
