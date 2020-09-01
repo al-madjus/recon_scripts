@@ -55,10 +55,6 @@ sudo masscan -iL $DIR/ip.txt -p0-79,81-442,444-1000,1001,1008,1019,1021-1034,103
 echo "New ports: " >> $DIR/../../_results/ports-$TODAY.txt
 grep -Fxvf $DIR/masscan.old $DIR/masscan.txt | tee -a $DIR/../../_results/ports-$TODAY.txt
 
-### Run ffuf ###
-while read p; do ffuf -u $p/FUZZ -w /usr/share/wordlists/default.txt -v -mc 200 -ac; done < $DIR/../../_results/subs-$TODAY.txt >> $DIR/ffuf.txt
-cat $DIR/ffuf.txt | grep '| URL |' | cut -c 14- | tee -a $DIR/../../_results/ffuf_$TODAY.txt
-
 ### Clean up ###
 rm $DIR/alive.tmp
 rm $DIR/ip.txt
