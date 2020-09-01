@@ -11,3 +11,6 @@ rm ~/Pentesting/targets/_results/ffuf.txt
 
 ### Run nuclei with all templates ###
 nuclei -l ~/Pentesting/targets/_results/subs-$TODAY.txt -t ~/nuclei-templates/{dns,generic-detections,panels,subdomain-takeovers,tokens,files,security-misconfiguration,technologies,vulnerabilities} -o ~/Pentesting/targets/_results/nuclei-$TODAY.txt
+
+### Send email when finished ###
+cat ~/Pentesting/targets/_results/subs-$TODAY | mutt -s "Recon finished!" -- $1
