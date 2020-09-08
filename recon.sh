@@ -1,4 +1,7 @@
 #!/bin/bash
+# Set PATH here since cron has very limited PATH
+export PATH=/usr/bin:/usr/sbin:/usr/local/bin:/usr/loca/sbin
+
 while read p; do ~/Pentesting/recon/recurrent.sh ~/Pentesting/targets/$p; done < ~/Pentesting/targets/programs.txt
 
 ### Do recon on the results from above ###
