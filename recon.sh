@@ -13,6 +13,7 @@ cat /home/al-madjus/Pentesting/targets/_results/ffuf.txt | grep '| URL |' | cut 
 rm /home/al-madjus/Pentesting/targets/_results/ffuf.txt
 
 ### Run nuclei with all templates ###
+nuclei --update-templates
 nuclei -l /home/al-madjus/Pentesting/targets/_results/subs-$TODAY.txt -t /home/al-madjus/nuclei-templates/dns -t /home/al-madjus/nuclei-templates/generic-detections -t /home/al-madjus/nuclei-templates/panels -t /home/al-madjus/nuclei-templates/subdomain-takeovers -t /home/al-madjus/nuclei-templates/tokens -t /home/al-madjus/nuclei-templates/files -t /home/al-madjus/nuclei-templates/security-misconfiguration -t /home/al-madjus/nuclei-templates/technologies -t /home/al-madjus/nuclei-templates/vulnerabilities -o /home/al-madjus/Pentesting/targets/_results/nuclei-$TODAY.txt
 
 ### Send email when finished ###
