@@ -22,7 +22,7 @@ while read p; do amass enum -brute -min-for-recursive 2 -d $p -r 8.8.8.8 -o $DIR
 # Clean up
 sed -i 's/target--//g' $DIR/scope/amass.txt
 
-findomain -q -t $p > $DIR/scope/findomain.txt
+findomain -q -t $p >> $DIR/scope/findomain.txt
 
 ### Merge files ###
 cat $DIR/scope/amass.txt $DIR/scope/findomain.txt >> $DIR/scope/scope.txt; done < $DIR/scope/domains.txt
