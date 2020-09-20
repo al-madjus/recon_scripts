@@ -14,7 +14,15 @@ rm /home/al-madjus/Pentesting/targets/_results/ffuf.txt
 
 ### Run nuclei with all templates ###
 nuclei --update-templates
-nuclei -l /home/al-madjus/Pentesting/targets/_results/subs-$TODAY.txt -t /home/al-madjus/nuclei-templates/{dns,generic-detections,panels,subdomain-takeovers,tokens,files,security-misconfiguration,technologies,vulnerabilities} -o /home/al-madjus/Pentesting/targets/_results/nuclei-$TODAY.txt
+nuclei -l /home/al-madjus/Pentesting/targets/_results/subs-$TODAY.txt -t /home/al-madjus/nuclei-templates/dns -o /home/al-madjus/Pentesting/targets/_results/nuclei-dns-$TODAY.txt
+nuclei -l /home/al-madjus/Pentesting/targets/_results/subs-$TODAY.txt -t /home/al-madjus/nuclei-templates/generic-detections -o /home/al-madjus/Pentesting/targets/_results/nuclei-generic-$TODAY.txt
+nuclei -l /home/al-madjus/Pentesting/targets/_results/subs-$TODAY.txt -t /home/al-madjus/nuclei-templates/panels -o /home/al-madjus/Pentesting/targets/_results/nuclei-panels-$TODAY.txt
+nuclei -l /home/al-madjus/Pentesting/targets/_results/subs-$TODAY.txt -t /home/al-madjus/nuclei-templates/subdomain-takeovers -o /home/al-madjus/Pentesting/targets/_results/nuclei-takeovers-$TODAY.txt
+nuclei -l /home/al-madjus/Pentesting/targets/_results/subs-$TODAY.txt -t /home/al-madjus/nuclei-templates/tokens -o /home/al-madjus/Pentesting/targets/_results/nuclei-tokens-$TODAY.txt
+nuclei -l /home/al-madjus/Pentesting/targets/_results/subs-$TODAY.txt -t /home/al-madjus/nuclei-templates/files -o /home/al-madjus/Pentesting/targets/_results/nuclei-files-$TODAY.txt
+nuclei -l /home/al-madjus/Pentesting/targets/_results/subs-$TODAY.txt -t /home/al-madjus/nuclei-templates/security-misconfiguration -o /home/al-madjus/Pentesting/targets/_results/nuclei-misconf-$TODAY.txt
+nuclei -l /home/al-madjus/Pentesting/targets/_results/subs-$TODAY.txt -t /home/al-madjus/nuclei-templates/technologies -o /home/al-madjus/Pentesting/targets/_results/nuclei-tech-$TODAY.txt
+nuclei -l /home/al-madjus/Pentesting/targets/_results/subs-$TODAY.txt -t /home/al-madjus/nuclei-templates/vulnerabilities -o /home/al-madjus/Pentesting/targets/_results/nuclei-vulns-$TODAY.txt
 
 ### Send email when finished ###
 cat /home/al-madjus/Pentesting/targets/_results/subs-$TODAY.txt | mutt -s "Recon finished!" -- $1
