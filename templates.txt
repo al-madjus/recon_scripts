@@ -1,0 +1,9 @@
+dns
+generic-detections
+panels
+subdomain-takeovers
+tokens
+files
+security-misconfiguration
+technologies
+vulnerabilities
