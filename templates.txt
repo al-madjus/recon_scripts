@@ -1,8 +1,7 @@
 dns
 generic-detections
 panels
-subdomain-takeovers
-tokens
+subdomain-takeover
 files
 security-misconfiguration
 technologies
