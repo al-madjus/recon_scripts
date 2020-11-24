@@ -1,0 +1,8 @@
+ffuf
+findomain
+httprobe
+jq
+masscan
+nuclei
+vita
+zdns

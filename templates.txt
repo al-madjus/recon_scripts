@@ -4,5 +4,4 @@ panels
 subdomain-takeover
 files
 security-misconfiguration
-technologies
 vulnerabilities
