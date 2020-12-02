@@ -3,6 +3,7 @@
 
 DIR=$1/scope
 TODAY=$(date +%d%m%Y)
+PROGRAM=$(cut -c 15- <<<$1)
 
 ### Check how many subs we already had ###
 before=$(cat $DIR/alive.txt|wc -l)
@@ -38,11 +39,17 @@ let result=${after}-${before}
 echo ${result}
 
 ### Display all the new subs ### 
-echo "### $1 ###" >> $DIR/../../_results/subs.new
+echo "### $PROGRAM ###" >> $DIR/../../_results/subs.new
 echo -e "These are the new subdomains found:"
-#echo "New subdomains: " >> ~/output-$TODAY.txt
-grep -F -x -v -f $DIR/alive.old $DIR/alive.txt | tee -a $DIR/../../_results/subs.new
+grep -F -x -v -f $DIR/alive.old $DIR/alive.txt | tee -a $DIR/../../_results/subs.new $DIR/newsubs.tmp
 rm $DIR/alive.old
+
+### Check for takeovers ###
+/usr/local/bin/nuclei -l $DIR/newsubs.tmp -t /root/nuclei-templates/subdomain-takeover/ -o /root/targets/_results/nuclei-takeover-$PROGRAM.txt
+rm $DIR/newsubs.tmp
+if test -f "/root/targets/_results/nuclei-takeover-$PROGRAM.txt"; then
+	cat /root/targets/_results/nuclei-takeover-$PROGRAM.txt | mutt -s '[!] Possible subdomain takeover' -- klarsen@klarsen.net
+fi
 
 ### Remove http:// and https:// from the temporary file ###
 sed -e 's/http:\/\///g' -e 's/https:\/\///g' -e 's/.*/\L&/' $DIR/alive.txt > $DIR/alive.tmp
