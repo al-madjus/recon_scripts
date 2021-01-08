@@ -44,10 +44,10 @@ echo "### $PROGRAM ###" >> $DIR/../../_results/subs.new
 echo -e "These are the new subdomains found:"
 grep -F -x -v -f $DIR/alive.old $DIR/alive.txt | tee -a $DIR/../../_results/subs.new $DIR/newsubs.tmp
 rm $DIR/alive.old
+rm $DIR/newsubs.tmp
 
 ### Check for takeovers ###
-/usr/local/bin/nuclei -l $DIR/newsubs.tmp -t /root/nuclei-templates/subdomain-takeover/ -o /root/targets/_results/nuclei-takeover-$PROGRAM.txt
-rm $DIR/newsubs.tmp
+/usr/local/bin/nuclei -l $DIR/alive.txt -t /root/nuclei-templates/subdomain-takeover/ -o /root/targets/_results/nuclei-takeover-$PROGRAM.txt
 if test -f "/root/targets/_results/nuclei-takeover-$PROGRAM.txt"; then
 	cat /root/targets/_results/nuclei-takeover-$PROGRAM.txt | mutt -s '[!] Possible subdomain takeover' -- klarsen@klarsen.net
 fi
