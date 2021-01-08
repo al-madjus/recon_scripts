@@ -50,8 +50,8 @@ grep -Fxvf $DIR/scope/alive.tmp $DIR/scope/scope.txt > $DIR/scope/dead.txt
 rm $DIR/scope/alive.tmp
 
 ### Display all the new subs ###
-echo "### $1 ###" >> $DIR/../_results/subs-$TODAY.txt
-echo -e "These are the new subdomains found:"
+#echo "### $1 ###" >> $DIR/../_results/subs-$TODAY.txt
+#echo -e "These are the new subdomains found:"
 #echo "New subdomains: " >> ~/output-$TODAY.txt
-grep -F -x -v -f $DIR/scope/alive.old $DIR/scope/alive.txt | tee -a $DIR/../_results/subs-$TODAY.txt
+#grep -F -x -v -f $DIR/scope/alive.old $DIR/scope/alive.txt | tee -a $DIR/../_results/subs-$TODAY.txt
 rm $DIR/scope/alive.old

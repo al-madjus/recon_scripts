@@ -14,6 +14,7 @@ cp $DIR/alive.txt $DIR/alive.old
 ### Find new subs using findomain and vita ###
 findomain -f $DIR/domains.txt -q | tee -a $DIR/dead.txt $DIR/scope.txt
 vita -f $DIR/domains.txt -a | tee -a $DIR/dead.txt $DIR/scope.txt
+while read p; do github-subdomains -d $p -raw | grep -v 'token not found' | grep -v '^$' | tee -a $DIR/dead.txt $DIR/scope.txt; done <$DIR/domains.txt
 while read p; do sed -i "/$p/d" $DIR/scope.txt; done < $DIR/oos.txt
 while read p; do sed -i "/$p/d" $DIR/dead.txt; done < $DIR/oos.txt
 sort -uo $DIR/dead.txt $DIR/dead.txt
@@ -21,7 +22,7 @@ sort -uo $DIR/scope.txt $DIR/scope.txt
 
 ### Find which subs are alive ### 
 echo -e "Finding active subdomains on $1... "
-cat $DIR/dead.txt | httprobe --prefer-https -c 200 >> $DIR/alive.txt
+cat $DIR/dead.txt | httprobe --prefer-https -c 400 >> $DIR/alive.txt
 
 ### Removing duplicates ###
 sort -uo $DIR/alive.txt $DIR/alive.txt

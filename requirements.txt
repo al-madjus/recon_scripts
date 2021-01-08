@@ -6,3 +6,4 @@ masscan
 nuclei
 vita
 zdns
+github-subdomains
