@@ -48,8 +48,12 @@ rm $DIR/newsubs.tmp
 
 ### Check for takeovers ###
 /usr/local/bin/nuclei -l $DIR/alive.txt -t /root/nuclei-templates/subdomain-takeover/ -o /root/targets/_results/nuclei-takeover-$PROGRAM.txt
-if test -f "/root/targets/_results/nuclei-takeover-$PROGRAM.txt"; then
-	cat /root/targets/_results/nuclei-takeover-$PROGRAM.txt | mutt -s '[!] Possible subdomain takeover' -- klarsen@klarsen.net
+if [ -f "/root/targets/_results/nuclei-takeover-$PROGRAM.txt" ] 
+then
+	if [ -s "/root/targets/_results/nuclei-takeover-$PROGRAM.txt" ] 
+	then
+		cat /root/targets/_results/nuclei-takeover-$PROGRAM.txt | mutt -s '[!] Possible subdomain takeover' -- klarsen@klarsen.net
+	fi
 fi
 
 ### Remove http:// and https:// from the temporary file ###
