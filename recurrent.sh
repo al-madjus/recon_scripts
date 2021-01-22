@@ -53,6 +53,8 @@ then
 	if [ -s "/root/targets/_results/nuclei-takeover-$PROGRAM.txt" ] 
 	then
 		cat /root/targets/_results/nuclei-takeover-$PROGRAM.txt | mutt -s '[!] Possible subdomain takeover' -- klarsen@klarsen.net
+	else 
+		rm /root/targets/_results/nuclei-takeover-$PROGRAM.txt
 	fi
 fi
 
