@@ -15,6 +15,13 @@ cp $DIR/alive.txt $DIR/alive.old
 findomain -f $DIR/domains.txt -q | tee -a $DIR/dead.txt $DIR/scope.txt
 vita -f $DIR/domains.txt -a | tee -a $DIR/dead.txt $DIR/scope.txt
 while read p; do github-subdomains -d $p -raw | grep -v 'token not found' | grep -v '^$' | tee -a $DIR/dead.txt $DIR/scope.txt; done <$DIR/domains.txt
+
+### Remove all oos domains from comcast scope ###
+if [ $PROGRAM = "comcast" ] then
+	sed -i '/hsd1/d' scope.txt
+fi
+
+### Remove oos domains ###
 while read p; do sed -i "/$p/d" $DIR/scope.txt; done < $DIR/oos.txt
 while read p; do sed -i "/$p/d" $DIR/dead.txt; done < $DIR/oos.txt
 sort -uo $DIR/dead.txt $DIR/dead.txt
