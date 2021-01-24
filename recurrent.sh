@@ -17,7 +17,7 @@ vita -f $DIR/domains.txt -a | tee -a $DIR/dead.txt $DIR/scope.txt
 while read p; do github-subdomains -d $p -raw | grep -v 'token not found' | grep -v '^$' | tee -a $DIR/dead.txt $DIR/scope.txt; done <$DIR/domains.txt
 
 ### Remove all oos domains from comcast scope ###
-if [ $PROGRAM = "comcast" ] then
+if grep -q 'comcast' <<<$DIR; then
 	sed -i '/hsd1/d' scope.txt
 fi
 
