@@ -15,7 +15,7 @@ rm /root/targets/_results/subs.new
 rm /root/targets/_results/ports.new
 
 ### Run recon ###
-while read p; do /root/recon/recurrent.sh /root/targets/$p; done < /root/targets/programs.txt
+while read p; do /root/recon/recurrent.sh /root/targets/$p $1; done < /root/targets/programs.txt
 
 ### Run ffuf ###
 while read p; do ffuf -u $p/FUZZ -w /usr/share/wordlists/default.txt -v -mc 200 -ac; done < /root/targets/_results/subs.new >> /root/targets/_results/ffuf.txt

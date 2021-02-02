@@ -59,7 +59,7 @@ if [ -f "/root/targets/_results/nuclei-takeover-$PROGRAM.txt" ]
 then
 	if [ -s "/root/targets/_results/nuclei-takeover-$PROGRAM.txt" ] 
 	then
-		cat /root/targets/_results/nuclei-takeover-$PROGRAM.txt | mutt -s '[!] Possible subdomain takeover' -- klarsen@klarsen.net
+		cat /root/targets/_results/nuclei-takeover-$PROGRAM.txt | mutt -s '[!] Possible subdomain takeover' -- $2
 	else 
 		rm /root/targets/_results/nuclei-takeover-$PROGRAM.txt
 	fi
@@ -88,3 +88,4 @@ grep -Fxvf $DIR/masscan.old $DIR/masscan.txt | tee -a $DIR/../../_results/ports.
 rm $DIR/alive.tmp
 rm $DIR/ip.txt
 rm $DIR/masscan.old
+while read p; do rm ~/$p.txt ~/$p.old.txt; done < $DIR/domains.txt
