@@ -18,7 +18,7 @@ while read p; do github-subdomains -d $p -raw | grep -v 'token not found' | grep
 
 ### Remove all oos domains from comcast scope ###
 if grep -q 'comcast' <<<$DIR; then
-	sed -i '/hsd1/d' scope.txt
+	sed -i '/hsd1/d' $DIR/scope.txt
 fi
 
 ### Remove oos domains ###
@@ -54,7 +54,7 @@ rm $DIR/alive.old
 rm $DIR/newsubs.tmp
 
 ### Check for takeovers ###
-/usr/local/bin/nuclei -l $DIR/alive.txt -t /root/nuclei-templates/subdomain-takeover/ -o /root/targets/_results/nuclei-takeover-$PROGRAM.txt
+/usr/local/bin/nuclei -l $DIR/alive.txt -t /root/nuclei-templates/takeovers/ -o /root/targets/_results/nuclei-takeover-$PROGRAM.txt
 if [ -f "/root/targets/_results/nuclei-takeover-$PROGRAM.txt" ] 
 then
 	if [ -s "/root/targets/_results/nuclei-takeover-$PROGRAM.txt" ] 
