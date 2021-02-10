@@ -18,7 +18,7 @@ while read p; do github-subdomains -d $p -raw | grep -v 'token not found' | grep
 
 ### Remove all oos domains from comcast scope ###
 if grep -q 'comcast' <<<$DIR; then
-	sed -i '/hsd1/d' $DIR/scope.txt
+	sed -i '/hsd1/d' $DIR/scope.txt $DIR/dead.txt
 fi
 
 ### Remove oos domains ###
