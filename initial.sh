@@ -17,7 +17,7 @@ banner(){
 
 ### Subdomain enumeration ###
 banner "Amass"
-while read p; do amass enum -brute -min-for-recursive 2 -d $p -r 8.8.8.8 -o $DIR/scope/amass.txt 
+while read p; do amass enum -brute -min-for-recursive 2 -d $p -config ~/.config/amass/config.ini -o $DIR/scope/amass.txt 
 # Clean up
 sed -i 's/target--//g' $DIR/scope/amass.txt
 
