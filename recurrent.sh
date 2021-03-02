@@ -15,14 +15,15 @@ cp $DIR/alive.txt $DIR/alive.old
 findomain -f $DIR/domains.txt -q | tee -a $DIR/dead.txt $DIR/scope.txt
 vita -f $DIR/domains.txt -a -t 3 | tee -a $DIR/dead.txt $DIR/scope.txt
 while read p; do github-subdomains -d $p -raw | grep -v 'token not found' | grep -v '^$' | tee -a $DIR/dead.txt $DIR/scope.txt; done <$DIR/domains.txt
+while read p; do sublist3r.py -d $p -b -o $DIR/sublist3r.txt & cat $DIR/sublist3r.txt >> $DIR/scope.txt & cat $DIR/sublist3r.txt >> $DIR/dead.txt; done <$DIR/domains.txt
 
 ### Create program specific wordlist ###
-cat $DIR/scope.txt | awk -F "." '{print $(NF-2)}' | sort -u >> $DIR/wordlist.txt
-sort -uo $DIR/wordlist.txt $DIR/wordlist.txt
+#cat $DIR/scope.txt | awk -F "." '{print $(NF-2)}' | sort -u >> $DIR/wordlist.txt
+#sort -uo $DIR/wordlist.txt $DIR/wordlist.txt
 ### Run syborg with above generated wordlist ###
-while read p; do syborg.py $p -w $DIR/wordlist.txt -o $DIR/syborg.txt; done <$DIR/domains.txt
-cat $DIR/syborg.txt >> $DIR/dead.txt
-cat $DIR/syborg.txt >> $DIR/scope.txt
+#while read p; do syborg.py $p -w $DIR/wordlist.txt -o $DIR/syborg.txt & cat $DIR/syborg.txt >> $DIR/dead.txt & cat $DIR/syborg.txt >> $DIR/scope.txt; done <$DIR/domains.txt
+### Remove syborg files ###
+#rm ./*.queue
 
 ### Remove all oos domains from comcast scope ###
 if grep -q 'comcast' <<<$DIR; then
@@ -93,7 +94,8 @@ echo "New ports for $1: " >> $DIR/../../_results/ports.new
 grep -Fxvf $DIR/masscan.old $DIR/masscan.txt | tee -a $DIR/../../_results/ports.new
 
 ### Clean up ###
-rm $DIR/syborg.txt
+#rm $DIR/syborg.txt
+rm $DIR/sublist3r.txt
 rm $DIR/alive.tmp
 rm $DIR/ip.txt
 rm $DIR/masscan.old
