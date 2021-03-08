@@ -16,6 +16,8 @@ findomain -f $DIR/domains.txt -q | tee -a $DIR/dead.txt $DIR/scope.txt
 vita -f $DIR/domains.txt -a -t 3 | tee -a $DIR/dead.txt $DIR/scope.txt
 while read p; do github-subdomains -d $p -raw | grep -v 'token not found' | grep -v '^$' | tee -a $DIR/dead.txt $DIR/scope.txt; done <$DIR/domains.txt
 while read p; do sublist3r.py -d $p -b -o $DIR/sublist3r.txt & cat $DIR/sublist3r.txt >> $DIR/scope.txt & cat $DIR/sublist3r.txt >> $DIR/dead.txt; done <$DIR/domains.txt
+# chaos client
+chaos -dL $DIR/domains.txt -silent -filter-wildcard | tee -a $DIR/dead.txt $DIR/scope.txt
 
 ### Create program specific wordlist ###
 #cat $DIR/scope.txt | awk -F "." '{print $(NF-2)}' | sort -u >> $DIR/wordlist.txt
