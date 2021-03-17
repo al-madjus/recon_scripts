@@ -7,7 +7,8 @@ for d in /root/targets/*; do
 	# Get new list of subs, removing known takeovers
 	if [ -f "$d/scope/knowntakeovers.txt" ]
 	then
-		diff $d/scope/knowntakeovers.txt $d/scope/alive.txt | grep "^>" | cut -c3- >> $d/scope/all.txt
+	#	diff $d/scope/knowntakeovers.txt $d/scope/alive.txt | grep "^>" | cut -c3- >> $d/scope/all.txt
+	grep -Fxvf $d/scope/knowntakeovers.txt $d/scope/alive.txt >> $d/scope/all.txt
 	else
 		cp $d/scope/alive.txt $d/scope/all.txt
 	fi

@@ -16,6 +16,8 @@ findomain -f $DIR/domains.txt -q | tee -a $DIR/dead.txt $DIR/scope.txt
 vita -f $DIR/domains.txt -a -t 3 | tee -a $DIR/dead.txt $DIR/scope.txt
 while read p; do github-subdomains -d $p -raw | grep -v 'token not found' | grep -v '^$' | tee -a $DIR/dead.txt $DIR/scope.txt; done <$DIR/domains.txt
 while read p; do sublist3r.py -d $p -b -o $DIR/sublist3r.txt & cat $DIR/sublist3r.txt >> $DIR/scope.txt & cat $DIR/sublist3r.txt >> $DIR/dead.txt; done <$DIR/domains.txt
+# clean up sublist3r
+killall python3
 # chaos client
 chaos -dL $DIR/domains.txt -silent -filter-wildcard | tee -a $DIR/dead.txt $DIR/scope.txt
 
@@ -65,16 +67,16 @@ rm $DIR/alive.old
 rm $DIR/newsubs.tmp
 
 ### Check for takeovers ###
-/usr/local/bin/nuclei -l $DIR/alive.txt -t /root/nuclei-templates/takeovers/ -o /root/targets/_results/nuclei-takeover-$PROGRAM.txt
-if [ -f "/root/targets/_results/nuclei-takeover-$PROGRAM.txt" ] 
-then
-	if [ -s "/root/targets/_results/nuclei-takeover-$PROGRAM.txt" ] 
-	then
-		cat /root/targets/_results/nuclei-takeover-$PROGRAM.txt | mutt -s '[!] Possible subdomain takeover' -- $2
-	else 
-		rm /root/targets/_results/nuclei-takeover-$PROGRAM.txt
-	fi
-fi
+#/usr/local/bin/nuclei -l $DIR/alive.txt -t /root/nuclei-templates/takeovers/ -o /root/targets/_results/nuclei-takeover-$PROGRAM.txt
+#if [ -f "/root/targets/_results/nuclei-takeover-$PROGRAM.txt" ] 
+#then
+#	if [ -s "/root/targets/_results/nuclei-takeover-$PROGRAM.txt" ] 
+#	then
+#		cat /root/targets/_results/nuclei-takeover-$PROGRAM.txt | mutt -s '[!] Possible subdomain takeover' -- $2
+#	else 
+#		rm /root/targets/_results/nuclei-takeover-$PROGRAM.txt
+#	fi
+#fi
 
 ### Remove http:// and https:// from the temporary file ###
 sed -e 's/http:\/\///g' -e 's/https:\/\///g' -e 's/.*/\L&/' $DIR/alive.txt > $DIR/alive.tmp
