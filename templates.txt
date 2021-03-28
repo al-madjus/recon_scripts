@@ -1,11 +1,14 @@
 cves
 default-logins
-dns/azure-takeover-detection.yaml
+dns
 exposed-panels
 exposed-tokens
 exposures
 fuzzing
+headless
+iot
 miscellaneous
 misconfiguration
+network
 takeovers
 vulnerabilities

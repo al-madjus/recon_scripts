@@ -24,7 +24,8 @@ rm /root/targets/_results/ffuf.txt
 
 ### Run nuclei with all templates ###
 /usr/local/bin/nuclei --update-templates
-while read p; do /usr/local/bin/nuclei -l /root/targets/_results/subs.new -t /root/nuclei-templates/$p -exclude files/robots.txt.yaml -exclude security-misconfiguration/basic-cors-flash.yaml -exclude security-misconfiguration/basic-cors.yaml -exclude security-misconfiguration/missing-csp.yaml -exclude security-misconfiguration/missing-hsts.yaml -exclude security-misconfiguration/missing-x-frame-options.yaml -exclude generic-detections/general-tokens.yaml -o /root/targets/_results/nuclei-$p.new; done < /root/recon/templates.txt
+while read p; do /usr/local/bin/nuclei -l /root/targets/_results/subs.new -t /root/nuclei-templates/$p -exclude exposed-tokens/generic -exclude miscellaneous/missing-csp.yaml -exclude miscellaneous/missing-hsts.yaml -exclude miscellaneous/missing-x-frame-options.yaml -exclude miscellaneous/robots.txt.yaml -o /root/targets/_results/nuclei-$p.new; done < /root/recon/templates.txt
+/usr/local/bin/nuclei -l /root/targets/_results/subs.new -t /root/nuclei-templates/ -o /root/targets/_results/nuclei.new
 
 ### Send email when finished ###
 cat /root/targets/_results/nuclei*.new | mutt -s "Recon finished!" -- $1
