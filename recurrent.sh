@@ -15,7 +15,7 @@ cp $DIR/alive.txt $DIR/alive.old
 findomain -f $DIR/domains.txt -q | tee -a $DIR/dead.txt $DIR/scope.txt
 vita -f $DIR/domains.txt -a -t 3 | tee -a $DIR/dead.txt $DIR/scope.txt
 while read p; do github-subdomains -d $p -raw | grep -v 'token not found' | grep -v '^$' | tee -a $DIR/dead.txt $DIR/scope.txt; done <$DIR/domains.txt
-while read p; do sublist3r.py -d $p -b -o $DIR/sublist3r.txt & cat $DIR/sublist3r.txt >> $DIR/scope.txt & cat $DIR/sublist3r.txt >> $DIR/dead.txt; done <$DIR/domains.txt
+while read p; do sublist3r.py -d $p -b -o $DIR/sublist3r.txt && cat $DIR/sublist3r.txt >> $DIR/scope.txt && cat $DIR/sublist3r.txt >> $DIR/dead.txt; done <$DIR/domains.txt
 # clean up sublist3r
 killall python3
 # chaos client
