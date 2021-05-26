@@ -1,51 +1,29 @@
 #!/bin/bash
+DIR=$1/scope
 
-DIR=$1
-WORDLIST_PATH="/usr/share/wordlists"
-TODAY=$(date +%d%m%Y)
+### Find new subs using findomain and vita ###
+findomain -f $DIR/domains.txt -q | tee -a $DIR/dead.txt $DIR/scope.txt
+vita -f $DIR/domains.txt -a -t 3 | tee -a $DIR/dead.txt $DIR/scope.txt
+chaos -dL $DIR/domains.txt -silent -filter-wildcard | tee -a $DIR/dead.txt $DIR/scope.txt
 
-# Colors
-GREEN="\033[1;32m"
-RED="\033[1;31m"
-RESET="\033[0m"
-
-# Functions
-banner(){
-	name=$1
-	echo -e "${RED}\n[*] Running $name...${RESET}"
-}
-
-### Subdomain enumeration ###
-banner "Amass"
-while read p; do amass enum -brute -min-for-recursive 2 -d $p -config ~/.config/amass/config.ini -o $DIR/scope/amass.txt 
-# Clean up
-sed -i 's/target--//g' $DIR/scope/amass.txt
-
-findomain -q -t $p >> $DIR/scope/findomain.txt
-
-### Merge files ###
-cat $DIR/scope/amass.txt $DIR/scope/findomain.txt >> $DIR/scope/scope.txt; done < $DIR/scope/domains.txt
-sort -uo $DIR/scope/scope.txt $DIR/scope/scope.txt
-
-### Remove out of scope domains ###
-while read p; do sed -i "/$p/d" $DIR/scope/scope.txt; done < $DIR/scope/oos.txt
-
-### Clean up ###
-rm $DIR/scope/amass.txt $DIR/scope/findomain.txt
-
-echo -e "Found number of subs:"
-wc -l  $DIR/scope/scope.txt
-
-### Backup alive subs ###
-cp $DIR/scope/alive.txt $DIR/scope/alive.old
+### Remove oos domains ###
+while read p; do sed -i "/$p/d" $DIR/scope.txt; done < $DIR/oos.txt
+while read p; do sed -i "/$p/d" $DIR/dead.txt; done < $DIR/oos.txt
+sort -uo $DIR/dead.txt $DIR/dead.txt
+sort -uo $DIR/scope.txt $DIR/scope.txt
 
 ### Find which subs are alive ### 
-banner "httprobe"
-cat $DIR/scope/scope.txt | httprobe --prefer-https -c 200 > $DIR/scope/alive.txt
+echo -e "Finding active subdomains on $1... "
+cat $DIR/dead.txt | httprobe --prefer-https -c 400 >> $DIR/alive.txt
 
-### Create list of dead subs for future checking ###
-sed -e 's/http:\/\///g' -e 's/https:\/\///g' -e 's/.*/\L&/' $DIR/scope/alive.txt > $DIR/scope/alive.tmp
-grep -Fxvf $DIR/scope/alive.tmp $DIR/scope/scope.txt > $DIR/scope/dead.txt
-rm $DIR/scope/alive.tmp
+### Removing duplicates ###
+sort -uo $DIR/alive.txt $DIR/alive.txt
 
-rm $DIR/scope/alive.old
+### Removing alive subs from dead subs ###
+sed -e 's/http:\/\///g' -e 's/https:\/\///g' -e 's/.*/\L&/' $DIR/alive.txt > $DIR/alive.tmp
+grep -Fxvf $DIR/alive.tmp $DIR/dead.txt > $DIR/subs.tmp
+mv $DIR/subs.tmp $DIR/dead.txt
+rm $DIR/alive.tmp
+
+### Clean up ###
+rm $DIR/alive.tmp
