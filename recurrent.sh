@@ -15,9 +15,9 @@ cp $DIR/alive.txt $DIR/alive.old
 findomain -f $DIR/domains.txt -q | tee -a $DIR/dead.txt $DIR/scope.txt
 vita -f $DIR/domains.txt -a -t 3 | tee -a $DIR/dead.txt $DIR/scope.txt
 while read p; do github-subdomains -d $p -raw | grep -v 'token not found' | grep -v '^$' | tee -a $DIR/dead.txt $DIR/scope.txt; done <$DIR/domains.txt
-while read p; do sublist3r.py -d $p -b -o $DIR/sublist3r.txt && cat $DIR/sublist3r.txt >> $DIR/scope.txt && cat $DIR/sublist3r.txt >> $DIR/dead.txt; done <$DIR/domains.txt
+#while read p; do sublist3r.py -d $p -b -o $DIR/sublist3r.txt && cat $DIR/sublist3r.txt >> $DIR/scope.txt && cat $DIR/sublist3r.txt >> $DIR/dead.txt; done <$DIR/domains.txt
 # clean up sublist3r
-killall python3
+#killall python3
 # chaos client
 chaos -dL $DIR/domains.txt -silent -filter-wildcard | tee -a $DIR/dead.txt $DIR/scope.txt
 
@@ -30,9 +30,9 @@ chaos -dL $DIR/domains.txt -silent -filter-wildcard | tee -a $DIR/dead.txt $DIR/
 #rm ./*.queue
 
 ### Remove all oos domains from comcast scope ###
-if grep -q 'comcast' <<<$DIR; then
-	sed -i '/hsd1/d' $DIR/scope.txt $DIR/dead.txt
-fi
+#if grep -q 'comcast' <<<$DIR; then
+#	sed -i '/hsd1/d' $DIR/scope.txt $DIR/dead.txt
+#fi
 
 ### Remove oos domains ###
 while read p; do sed -i "/$p/d" $DIR/scope.txt; done < $DIR/oos.txt
@@ -42,7 +42,8 @@ sort -uo $DIR/scope.txt $DIR/scope.txt
 
 ### Find which subs are alive ### 
 echo -e "Finding active subdomains on $1... "
-cat $DIR/dead.txt | httprobe --prefer-https -c 400 >> $DIR/alive.txt
+#cat $DIR/dead.txt | httprobe --prefer-https -c 400 >> $DIR/alive.txt
+cat $DIR/dead.txt | httpx -threads 400 -silent >> $DIR/alive.txt
 
 ### Removing duplicates ###
 sort -uo $DIR/alive.txt $DIR/alive.txt
