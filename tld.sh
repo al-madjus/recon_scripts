@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DIR=$2/scope
+DIR=~/targets/$2/scope
 
 # Run crtsh.sh
 crtsh.sh $1 >> $DIR/crtsh.txt
