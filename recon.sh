@@ -24,7 +24,7 @@ rm /root/targets/_results/ffuf.txt
 
 ### Run nuclei with all templates ###
 /usr/local/bin/nuclei --update-templates
-/usr/local/bin/nuclei -l /root/targets/_results/subs.new -t /root/nuclei-templates/ -etags fuzz,dos,misc,tech,token -o /root/targets/_results/nuclei.new
+/usr/local/bin/nuclei -iserver $2 -itoken $3 -l /root/targets/_results/subs.new -t /root/nuclei-templates/ -etags fuzz,dos,misc,misconfig,tech,token -o /root/targets/_results/nuclei.new
 
 ### Send email when finished ###
 cat /root/targets/_results/nuclei*.new | grep '\[medium\]\|\[high\]\|\[critical\]' | mutt -s "Recon finished!" -- $1
